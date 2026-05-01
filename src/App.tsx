@@ -5,6 +5,7 @@ import { HeadlineBar } from './components/newsStand/HeadlineBar'
 import { MediaGrid } from './components/newsStand/MediaGrid'
 import { NewsListView } from './components/newsStand/NewsListView'
 import { TabPanel } from './components/newsStand/TabPanel'
+import { ViewModeButtonGroup } from './components/newsStand/ViewModeButtonGroup'
 import { mediaDummyList } from './fixtures/mediaDummyList'
 import {
   clampPagination,
@@ -168,9 +169,13 @@ function App() {
           setCurrentTab(value)
           setPagination(0)
         }}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
         subscribedCount={user.subscribingMediaList.length}
+        actions={
+          <ViewModeButtonGroup
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+          />
+        }
       >
         {{
           all: currentView,

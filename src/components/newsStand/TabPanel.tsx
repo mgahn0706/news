@@ -98,7 +98,7 @@ export function TabPanel({
             type="button"
             aria-label="List view"
             onClick={() => onViewModeChange('LIST')}
-            className="inline-flex h-6 w-6 items-center justify-center"
+            className="inline-flex h-6 w-6 cursor-pointer items-center justify-center"
           >
             <ListViewIcon active={viewMode === 'LIST'} />
           </button>
@@ -106,7 +106,7 @@ export function TabPanel({
             type="button"
             aria-label="Grid view"
             onClick={() => onViewModeChange('GRID')}
-            className="inline-flex h-6 w-6 items-center justify-center"
+            className="inline-flex h-6 w-6 cursor-pointer items-center justify-center"
           >
             <GridViewIcon active={viewMode === 'GRID'} />
           </button>

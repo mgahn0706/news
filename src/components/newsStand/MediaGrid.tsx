@@ -46,7 +46,7 @@ function PaginationChevron({
       aria-label={isLeft ? 'Previous media page' : 'Next media page'}
       onClick={onClick}
       disabled={disabled}
-      className="hidden w-12 shrink-0 self-stretch place-content-center place-items-center bg-transparent text-[#879298] transition hover:bg-[#F5F7F9] hover:text-[#14212B] disabled:cursor-default disabled:opacity-0 lg:grid"
+      className="hidden w-12 shrink-0 self-stretch cursor-pointer place-content-center place-items-center bg-transparent text-[#879298] transition hover:bg-[#F5F7F9] hover:text-[#14212B] disabled:cursor-default disabled:opacity-0 lg:grid"
     >
       <svg
         viewBox="0 0 24 24"
@@ -114,7 +114,7 @@ export function MediaGrid({
               type="button"
               onClick={onPreviousPage}
               disabled={currentPage === 0}
-              className="inline-flex h-10 items-center justify-center rounded-full border border-[#D2DAE0] px-4 text-sm font-medium text-[#14212B] disabled:opacity-40"
+              className="inline-flex h-10 cursor-pointer items-center justify-center rounded-full border border-[#D2DAE0] px-4 text-sm font-medium text-[#14212B] disabled:cursor-default disabled:opacity-40"
             >
               이전
             </button>
@@ -125,7 +125,7 @@ export function MediaGrid({
               type="button"
               onClick={onNextPage}
               disabled={currentPage === totalPages - 1}
-              className="inline-flex h-10 items-center justify-center rounded-full border border-[#D2DAE0] px-4 text-sm font-medium text-[#14212B] disabled:opacity-40"
+              className="inline-flex h-10 cursor-pointer items-center justify-center rounded-full border border-[#D2DAE0] px-4 text-sm font-medium text-[#14212B] disabled:cursor-default disabled:opacity-40"
             >
               다음
             </button>

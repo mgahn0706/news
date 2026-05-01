@@ -33,6 +33,7 @@ Guidance for Codex and similar coding agents working in this repository.
 - Do not add `useMemo` or `useCallback` by default; only add them when there is a concrete need.
 - Keep TypeScript types explicit when inference would be unclear to a reader.
 - Use PascalCase for component filenames. Reserve camelCase for non-component modules such as helpers, fixtures, and utility files.
+- Buttons should default to `cursor-pointer`; if a button can be disabled, add an explicit disabled cursor override such as `disabled:cursor-default`.
 - Put reusable UI into `src/components/` by default.
 - Put reusable primitive or shadcn-like UI pieces into `src/components/ui/` only when they are domain-agnostic.
 - Keep domain-specific reusable UI out of `src/components/ui/`; place it in a feature-oriented component folder such as `src/components/newsStand/`.

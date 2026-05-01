@@ -15,16 +15,13 @@ const GRID_CAPACITY = 24
 
 function EmptyMediaGridItem() {
   return (
-    <div
-      aria-hidden="true"
-      className="aspect-video bg-white p-4"
-    >
+    <div aria-hidden="true" className="aspect-video overflow-hidden bg-white p-4">
       <div className="flex h-full items-center justify-center">
-        <div className="flex w-full max-w-[122px] flex-col items-center gap-3">
-          <div className="h-16 w-16 rounded-full bg-[#F5F7F9]" />
+        <div className="flex w-full max-w-[112px] flex-col items-center gap-3">
+          <div className="h-14 w-14 rounded-full bg-[#F5F7F9]" />
           <div className="flex w-full flex-col items-center gap-1.5">
-            <div className="h-3 w-20 rounded-full bg-[#F5F7F9]" />
-            <div className="h-3 w-14 rounded-full bg-[#F5F7F9]" />
+            <div className="h-3 w-16 max-w-full rounded-full bg-[#F5F7F9]" />
+            <div className="h-3 w-12 max-w-full rounded-full bg-[#F5F7F9]" />
           </div>
         </div>
       </div>

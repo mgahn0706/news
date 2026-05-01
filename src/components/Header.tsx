@@ -2,11 +2,14 @@ import { formatKoreanDate } from '../libs/date'
 
 export function Header() {
   return (
-    <header className="newsstand-header">
-      <div className="newsstand-header__inner">
-        <div className="newsstand-header__brand" aria-label="News stand">
+    <header className="pt-10 md:pt-6">
+      <div className="mx-auto flex min-h-[29px] w-[min(930px,calc(100vw-48px))] items-center justify-between md:w-[calc(100vw-32px)] md:flex-col md:items-start md:gap-2">
+        <div
+          className="inline-flex min-w-0 items-center gap-3"
+          aria-label="News stand"
+        >
           <svg
-            className="newsstand-header__icon"
+            className="h-6 w-6 shrink-0 text-[#14212B]"
             viewBox="0 0 24 24"
             fill="none"
             role="img"
@@ -27,9 +30,13 @@ export function Header() {
             <path d="M14 9H17" stroke="currentColor" strokeWidth="1.4" />
             <path d="M14 12H17" stroke="currentColor" strokeWidth="1.4" />
           </svg>
-          <h1 className="newsstand-header__title">뉴스스탠드</h1>
+          <h1 className="m-0 text-2xl font-bold leading-none tracking-[-0.02em] text-[#14212B]">
+            뉴스스탠드
+          </h1>
         </div>
-        <p className="newsstand-header__date">{formatKoreanDate(new Date())}</p>
+        <p className="m-0 text-base font-medium tracking-[-0.01em] text-[#5F6E76]">
+          {formatKoreanDate(new Date())}
+        </p>
       </div>
     </header>
   )

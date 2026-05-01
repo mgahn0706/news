@@ -6,10 +6,14 @@ import { MediaGrid } from './components/newsStand/MediaGrid'
 import { NewsListView } from './components/newsStand/NewsListView'
 import { TabPanel } from './components/newsStand/TabPanel'
 import { mediaDummyList } from './fixtures/mediaDummyList'
+import {
+  clampPagination,
+  type CurrentTab,
+  useNewsStandView,
+} from './hooks/useNewsStandView'
 import { useSubscription } from './hooks/useSubscription'
 import { useTimer } from './hooks/useTimer'
 
-const MEDIA_PER_PAGE = 24
 const DEFAULT_TAB = 'ALL' as const
 const DEFAULT_VIEW_MODE = 'GRID' as const
 const LEFT_HEADLINE_CATEGORIES = ['ECONOMY', 'IT', 'LOCAL'] as const
@@ -19,12 +23,7 @@ const RIGHT_HEADLINE_CATEGORIES = [
   'MAGAZINE',
 ] as const
 
-type CurrentTab = 'ALL' | 'SUBSCRIBING'
 type ViewMode = 'LIST' | 'GRID'
-
-function clampPagination(page: number, totalPages: number) {
-  return Math.min(Math.max(page, 0), Math.max(totalPages - 1, 0))
-}
 
 function getHeadlineContent(mediaTitle: string, newsTitle: string) {
   const prefix = `${mediaTitle} | `
@@ -124,19 +123,20 @@ function App() {
   const [currentTab, setCurrentTab] = useState<CurrentTab>(DEFAULT_TAB)
   const [viewMode, setViewMode] = useState<ViewMode>(DEFAULT_VIEW_MODE)
   const [pagination, setPagination] = useState(0)
-  const visibleMedia =
-    currentTab === 'SUBSCRIBING'
-      ? mediaDummyList.filter((media) =>
-          user.subscribingMediaList.includes(media.id),
-        )
-      : mediaDummyList
-  const totalPages = Math.ceil(visibleMedia.length / MEDIA_PER_PAGE)
-  const pageStart = pagination * MEDIA_PER_PAGE
-  const pageItems = visibleMedia.slice(pageStart, pageStart + MEDIA_PER_PAGE)
-  const headlineScopeKey = `${currentTab}:${pagination}:${user.subscribingMediaList.join(',')}`
-
-  function renderGrid() {
-    return (
+  const { visibleMedia, pageItems, totalPages, headlineScopeKey } =
+    useNewsStandView({
+      currentTab,
+      pagination,
+      subscribingMediaList: user.subscribingMediaList,
+    })
+  const currentView =
+    viewMode === 'LIST' ? (
+      <NewsListView
+        items={visibleMedia}
+        isSubscribed={isSubscribed}
+        onToggleSubscription={toggleSubscription}
+      />
+    ) : (
       <MediaGrid
         items={pageItems}
         currentPage={pagination}
@@ -151,21 +151,6 @@ function App() {
         }
       />
     )
-  }
-
-  function renderCurrentView() {
-    if (viewMode === 'LIST') {
-      return (
-        <NewsListView
-          items={visibleMedia}
-          isSubscribed={isSubscribed}
-          onToggleSubscription={toggleSubscription}
-        />
-      )
-    }
-
-    return renderGrid()
-  }
 
   return (
     <main
@@ -188,8 +173,8 @@ function App() {
         subscribedCount={user.subscribingMediaList.length}
       >
         {{
-          all: renderCurrentView(),
-          subscribing: renderCurrentView(),
+          all: currentView,
+          subscribing: currentView,
         }}
       </TabPanel>
     </main>

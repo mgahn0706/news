@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { Header } from './components/Header'
-import { MediaGrid } from './components/ui/mediaGrid'
+import { MediaGrid } from './components/newsStand/MediaGrid'
 import { mediaDummyList } from './fixtures/mediaDummyList'
 
 const MEDIA_PER_PAGE = 24

@@ -1,5 +1,5 @@
 import type { Media } from '../../type/types'
-import { MediaGridItem } from './mediaGridItem'
+import { MediaGridItem } from './MediaGridItem'
 
 type MediaGridProps = {
   items: Media[]
@@ -10,6 +10,25 @@ type MediaGridProps = {
 }
 
 const GRID_CAPACITY = 24
+
+function EmptyMediaGridItem() {
+  return (
+    <div
+      aria-hidden="true"
+      className="aspect-video bg-white p-4"
+    >
+      <div className="flex h-full items-center justify-center">
+        <div className="flex w-full max-w-[122px] flex-col items-center gap-3">
+          <div className="h-16 w-16 rounded-full bg-[#F5F7F9]" />
+          <div className="flex w-full flex-col items-center gap-1.5">
+            <div className="h-3 w-20 rounded-full bg-[#F5F7F9]" />
+            <div className="h-3 w-14 rounded-full bg-[#F5F7F9]" />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function PaginationChevron({
   direction,
@@ -81,11 +100,7 @@ export function MediaGrid({
               />
             ))}
             {Array.from({ length: emptyCells }, (_, index) => (
-              <div
-                key={`empty-cell-${index}`}
-                aria-hidden="true"
-                className="h-[154px] bg-white"
-              />
+              <EmptyMediaGridItem key={`empty-cell-${index}`} />
             ))}
           </div>
         </div>

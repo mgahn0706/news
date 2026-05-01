@@ -2,8 +2,8 @@ import { formatKoreanDate } from '../libs/date'
 
 export function Header() {
   return (
-    <header className="pt-10 md:pt-6">
-      <div className="mx-auto flex min-h-[29px] w-[min(930px,calc(100vw-48px))] items-center justify-between md:w-[calc(100vw-32px)] md:flex-col md:items-start md:gap-2">
+    <header className="pt-10">
+      <div className="mx-auto flex min-h-[29px] w-[min(1034px,calc(100vw-48px))] items-center justify-between">
         <div
           className="inline-flex min-w-0 items-center gap-3"
           aria-label="News stand"

@@ -59,16 +59,16 @@ function PaginationChevron({
       aria-label={isLeft ? 'Previous media page' : 'Next media page'}
       onClick={onClick}
       disabled={disabled}
-      className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#D2DAE0] bg-white text-[#879298] transition hover:border-[#14212B] hover:text-[#14212B] disabled:cursor-default disabled:opacity-0 lg:inline-flex"
+      className="hidden w-12 shrink-0 self-stretch place-content-center place-items-center bg-transparent text-[#879298] transition hover:bg-[#F5F7F9] hover:text-[#14212B] disabled:cursor-default disabled:opacity-0 lg:grid"
     >
       <svg
         viewBox="0 0 24 24"
         fill="none"
         aria-hidden="true"
-        className="h-5 w-5"
+        className="h-10 w-10"
       >
         <path
-          d={isLeft ? 'M14.5 6.5L9 12L14.5 17.5' : 'M9.5 6.5L15 12L9.5 17.5'}
+          d={isLeft ? 'M14 7L9 12L14 17' : 'M10 7L15 12L10 17'}
           stroke="currentColor"
           strokeWidth="1.4"
           strokeLinecap="round"
@@ -92,7 +92,7 @@ export function MediaGrid({
   return (
     <section
       aria-label="Media grid"
-      className="mx-auto mt-12 flex w-[min(1034px,calc(100vw-48px))] items-center gap-8 md:mt-8 md:w-[calc(100vw-32px)] lg:gap-[32px]"
+      className="mx-auto mt-12 flex w-[min(1034px,calc(100vw-48px))] items-stretch gap-8 md:mt-8 md:w-[calc(100vw-32px)] lg:gap-[32px]"
     >
       <PaginationChevron
         direction="left"

@@ -32,6 +32,8 @@ Guidance for Codex and similar coding agents working in this repository.
 - Prefer clear state flow over premature optimization.
 - Do not add `useMemo` or `useCallback` by default; only add them when there is a concrete need.
 - Keep TypeScript types explicit when inference would be unclear to a reader.
+- Put reusable UI into `src/components/` by default.
+- When adding a new view section that can be reused, extract it into a component instead of leaving it inline in `App.tsx` or page files.
 
 ## Styling
 

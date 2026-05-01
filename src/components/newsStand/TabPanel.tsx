@@ -7,6 +7,7 @@ import {
   TabsTrigger,
 } from '../ui/Tabs'
 import { Badge } from '../ui/Badge'
+import { NewsStandContent } from './Layout'
 
 type CurrentTab = 'ALL' | 'SUBSCRIBING'
 type ViewMode = 'LIST' | 'GRID'
@@ -72,7 +73,7 @@ export function TabPanel({
       onValueChange={(value) => onTabChange(value as CurrentTab)}
       className="pt-8"
     >
-      <div className="mx-auto flex h-6 w-[min(1034px,calc(100vw-48px))] items-center justify-between">
+      <NewsStandContent className="flex h-6 items-center justify-between">
         <TabsList className="inline-flex items-center gap-6 rounded-none border-0 bg-transparent p-0">
           <TabsTrigger
             value="ALL"
@@ -111,7 +112,7 @@ export function TabPanel({
             <GridViewIcon active={viewMode === 'GRID'} />
           </button>
         </div>
-      </div>
+      </NewsStandContent>
 
       <TabsContent value="ALL">{children.all}</TabsContent>
       <TabsContent value="SUBSCRIBING">{children.subscribing}</TabsContent>

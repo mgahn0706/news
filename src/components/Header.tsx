@@ -1,9 +1,10 @@
 import { formatKoreanDate } from '../libs/date'
+import { NewsStandContent } from './newsStand/Layout'
 
 export function Header() {
   return (
     <header className="pt-10">
-      <div className="mx-auto flex min-h-[29px] w-[min(1034px,calc(100vw-48px))] items-center justify-between">
+      <NewsStandContent className="flex min-h-[29px] items-center justify-between">
         <div
           className="inline-flex min-w-0 items-center gap-3"
           aria-label="News stand"
@@ -37,7 +38,7 @@ export function Header() {
         <p className="m-0 text-base font-medium tracking-[-0.01em] text-[#5F6E76]">
           {formatKoreanDate(new Date())}
         </p>
-      </div>
+      </NewsStandContent>
     </header>
   )
 }

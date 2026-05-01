@@ -25,16 +25,16 @@ export function MediaGridItem({
   return (
     <article
       id={id}
-      className={`group relative aspect-video p-4 transition-colors hover:bg-[#F5F7F9] ${baseBackground}`}
+      className={`group relative aspect-video overflow-hidden transition-colors hover:bg-[#F5F7F9] ${baseBackground}`}
     >
-      <div className="absolute inset-0 flex items-center justify-center p-4 transition-opacity group-hover:opacity-0">
-        <div className="flex w-full max-w-[122px] flex-col items-center gap-3">
-          <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-[#D2DAE0] bg-[#F5F7F9]">
+      <div className="absolute inset-0 grid place-items-center transition-opacity group-hover:opacity-0">
+        <div className="flex w-full max-w-[118px] flex-col items-center gap-2.5 px-3">
+          <div className="relative flex h-10 w-full items-center justify-center overflow-hidden border border-[#D2DAE0] bg-[#F5F7F9] px-2">
             {!imageError ? (
               <img
                 src={image}
                 alt={`${title} logo`}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
                 onError={() => setImageError(true)}
               />
             ) : (
@@ -43,15 +43,15 @@ export function MediaGridItem({
               </span>
             )}
           </div>
-          <div className="text-center">
-            <p className="line-clamp-2 break-keep text-sm leading-[1.15] font-medium tracking-[-0.01em] text-[#14212B]">
+          <div className="min-h-[32px] w-full text-center">
+            <p className="break-keep text-sm leading-[1.15] font-medium tracking-[-0.01em] text-[#14212B]">
               {title}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
+      <div className="absolute inset-0 grid place-items-center opacity-0 transition-opacity group-hover:opacity-100">
         <div className="pointer-events-none group-hover:pointer-events-auto">
           <SubscriptionButton
             subscribed={subscribed}

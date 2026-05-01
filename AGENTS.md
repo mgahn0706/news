@@ -14,6 +14,7 @@ Guidance for Codex and similar coding agents working in this repository.
 - Static assets live under `public/` and `src/assets/`.
 - Design source of truth: `docs/docs-design-spec.pdf` and `docs/docs-design-system.pdf`.
 - Validation guide: `docs/checklist.md`.
+- Before starting any UI task, read the relevant part of the design spec first and implement from that reference rather than memory.
 - Treat the PDFs above as authoritative product requirements, not inspiration. When a request touches UI, layout, interaction, copy hierarchy, or styling, follow those documents strictly.
 - Use `docs/checklist.md` to validate affected user scenarios before closing any UI-related task.
 

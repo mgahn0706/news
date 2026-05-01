@@ -28,3 +28,19 @@ body,
 body {
   margin: 0;
 }
+
+@keyframes headline-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.headline-slide-up {
+  animation: headline-slide-up 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}

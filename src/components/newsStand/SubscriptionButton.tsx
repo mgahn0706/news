@@ -43,7 +43,7 @@ export function SubscriptionButton({
           </>
         )}
       </svg>
-      <span>{subscribed ? '구독해제' : '구독하기'}</span>
+      <span>{subscribed ? '해지하기' : '구독하기'}</span>
     </button>
   )
 }

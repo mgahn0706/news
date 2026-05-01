@@ -1,32 +1,36 @@
-import type { Media } from '../../type/types'
-import { MediaGridItem } from './MediaGridItem'
+import type { Media } from "../../type/types";
+import { MediaGridItem } from "./MediaGridItem";
+import { NewsStandContent } from "./Layout";
 
 type MediaGridProps = {
-  items: Media[]
-  currentPage: number
-  totalPages: number
-  isSubscribed: (mediaId: string) => boolean
-  onToggleSubscription: (mediaId: string) => void
-  onPreviousPage: () => void
-  onNextPage: () => void
-}
+  items: Media[];
+  currentPage: number;
+  totalPages: number;
+  isSubscribed: (mediaId: string) => boolean;
+  onToggleSubscription: (mediaId: string) => void;
+  onPreviousPage: () => void;
+  onNextPage: () => void;
+};
 
-const GRID_CAPACITY = 24
+const GRID_CAPACITY = 24;
 
 function EmptyMediaGridItem() {
   return (
-    <div aria-hidden="true" className="aspect-video overflow-hidden bg-white p-4">
-      <div className="flex h-full items-center justify-center">
-        <div className="flex w-full max-w-[112px] flex-col items-center gap-3">
-          <div className="h-14 w-14 rounded-full bg-[#F5F7F9]" />
+    <div
+      aria-hidden="true"
+      className="aspect-video overflow-hidden bg-white"
+    >
+      <div className="grid h-full place-items-center">
+        <div className="flex w-full max-w-[118px] flex-col items-center gap-2.5 px-3">
+          <div className="h-10 w-full bg-[#F5F7F9]" />
           <div className="flex w-full flex-col items-center gap-1.5">
             <div className="h-3 w-16 max-w-full rounded-full bg-[#F5F7F9]" />
-            <div className="h-3 w-12 max-w-full rounded-full bg-[#F5F7F9]" />
+            <div className="h-3 w-10 max-w-full rounded-full bg-[#F5F7F9]" />
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function PaginationChevron({
@@ -34,19 +38,20 @@ function PaginationChevron({
   onClick,
   disabled,
 }: {
-  direction: 'left' | 'right'
-  onClick: () => void
-  disabled: boolean
+  direction: "left" | "right";
+  onClick: () => void;
+  disabled: boolean;
 }) {
-  const isLeft = direction === 'left'
+  const isLeft = direction === "left";
+  const positionClass = isLeft ? "-left-14" : "-right-14";
 
   return (
     <button
       type="button"
-      aria-label={isLeft ? 'Previous media page' : 'Next media page'}
+      aria-label={isLeft ? "Previous media page" : "Next media page"}
       onClick={onClick}
       disabled={disabled}
-      className="hidden w-12 shrink-0 self-stretch cursor-pointer place-content-center place-items-center bg-transparent text-[#879298] transition hover:bg-[#F5F7F9] hover:text-[#14212B] disabled:cursor-default disabled:opacity-0 lg:grid"
+      className={`absolute inset-y-0 hidden w-12 cursor-pointer place-content-center place-items-center bg-transparent text-[#879298] transition hover:bg-[#F5F7F9] hover:text-[#14212B] disabled:cursor-default disabled:opacity-0 lg:grid ${positionClass}`}
     >
       <svg
         viewBox="0 0 24 24"
@@ -55,7 +60,7 @@ function PaginationChevron({
         className="h-10 w-10"
       >
         <path
-          d={isLeft ? 'M14 7L9 12L14 17' : 'M10 7L15 12L10 17'}
+          d={isLeft ? "M14 7L9 12L14 17" : "M10 7L15 12L10 17"}
           stroke="currentColor"
           strokeWidth="1.4"
           strokeLinecap="round"
@@ -63,7 +68,7 @@ function PaginationChevron({
         />
       </svg>
     </button>
-  )
+  );
 }
 
 export function MediaGrid({
@@ -75,13 +80,13 @@ export function MediaGrid({
   onPreviousPage,
   onNextPage,
 }: MediaGridProps) {
-  const showPagination = totalPages > 1
-  const emptyCells = Math.max(GRID_CAPACITY - items.length, 0)
+  const showPagination = totalPages > 1;
+  const emptyCells = Math.max(GRID_CAPACITY - items.length, 0);
 
   return (
-    <section
+    <NewsStandContent
       aria-label="Media grid"
-      className="mx-auto mt-12 flex w-[min(1034px,calc(100vw-48px))] items-stretch gap-8 md:mt-8 md:w-[calc(100vw-32px)] lg:gap-[32px]"
+      className="relative mt-12"
     >
       <PaginationChevron
         direction="left"
@@ -89,7 +94,7 @@ export function MediaGrid({
         disabled={currentPage === 0}
       />
 
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0">
         <div className="overflow-hidden rounded-none border border-[#D2DAE0] bg-[#D2DAE0]">
           <div className="grid grid-cols-2 gap-px bg-[#D2DAE0] sm:grid-cols-3 lg:grid-cols-6">
             {items.map((media) => (
@@ -138,6 +143,6 @@ export function MediaGrid({
         onClick={onNextPage}
         disabled={currentPage === totalPages - 1}
       />
-    </section>
-  )
+    </NewsStandContent>
+  );
 }

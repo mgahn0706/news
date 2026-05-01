@@ -48,6 +48,21 @@ const NEWS_TEMPLATES_BY_CATEGORY: Record<MediaCategory, NewsTemplate[]> = {
       content:
         '초기 투자 시장에서 직장인 일상형 서비스가 다시 주목받는 흐름을 설명하는 경제 더미 기사입니다. 실사용성과 반복 이용률에 주목합니다.',
     },
+    {
+      title: '아침 할인 경쟁 붙었다… 편의점 구독형 도시락 실험 확대',
+      content:
+        '출근 시간대 수요를 겨냥한 구독형 도시락 서비스 경쟁을 다루는 경제 더미 기사입니다. 가격 할인보다 반복 구매율 확보가 핵심이라는 점을 짚습니다.',
+    },
+    {
+      title: '점심값 체감지수 공개한 플랫폼들… 직장인 소비 데이터 전쟁',
+      content:
+        '플랫폼 기업이 축적한 식사 소비 데이터를 서비스 차별화에 활용하는 흐름을 다루는 경제 더미 기사입니다. 정보 제공이 새로운 락인 전략이 되는 과정을 설명합니다.',
+    },
+    {
+      title: '작은 복지, 큰 잔존율… 기업들 “마음건강 예산은 비용 아닌 투자”',
+      content:
+        '복지 예산이 인재 유지와 생산성에 미치는 효과를 분석하는 경제 더미 기사입니다. 정서 지원 제도가 실적과 문화에 어떻게 연결되는지 정리합니다.',
+    },
   ],
   BROADCAST: [
     {
@@ -84,6 +99,21 @@ const NEWS_TEMPLATES_BY_CATEGORY: Record<MediaCategory, NewsTemplate[]> = {
       title: '사내 소통 플랫폼 업그레이드… 직원들은 무엇이 편해졌나',
       content:
         '협업 도구 변화가 업무 현장에 미치는 영향을 짚는 방송 더미 기사입니다. 기능 설명보다 실제 사용 반응을 우선으로 전달합니다.',
+    },
+    {
+      title: '“앉아보니 다르네요” 새 정류장 의자, 시민 체감 리포트',
+      content:
+        '생활 인프라 개선을 짧은 인터뷰와 현장 화면 중심으로 전하는 방송 더미 기사입니다. 숫자보다 현장 반응을 먼저 보여주는 구성을 따릅니다.',
+    },
+    {
+      title: '야근 뒤 귀가길, 불빛이 먼저 켜졌다… 스마트홈 체험기',
+      content:
+        '기술 서비스를 실제 사용 장면과 감정선에 맞춰 풀어내는 방송 더미 기사입니다. 일상 속 변화가 체감되는 순간을 중심으로 전개합니다.',
+    },
+    {
+      title: '직장인 플랫폼 전쟁… “더 조용하게, 더 빨리” 현장 목소리',
+      content:
+        '업무용 플랫폼 경쟁을 사용자 인터뷰와 현장 사례로 풀어내는 방송 더미 기사입니다. 기능 소개보다 업무 피로 감소 효과에 주목합니다.',
     },
   ],
   IT: [
@@ -122,6 +152,21 @@ const NEWS_TEMPLATES_BY_CATEGORY: Record<MediaCategory, NewsTemplate[]> = {
       content:
         '교통 안내 음성 시스템을 사용자 경험 관점에서 풀어내는 IT 더미 기사입니다. 작은 문장 변화가 길 찾기 효율을 얼마나 높이는지 설명합니다.',
     },
+    {
+      title: '버스정류장에도 인터페이스가 있다… 공공 의자 리디자인의 UX',
+      content:
+        '공공 디자인을 사용자 인터페이스 관점에서 해석하는 IT 더미 기사입니다. 작은 물리적 변화가 대기 경험을 어떻게 바꾸는지 분석합니다.',
+    },
+    {
+      title: '조용한 밤 추천의 비밀… OTT는 맥락을 어떻게 학습하나',
+      content:
+        '사용자 맥락 기반 추천 시스템의 작동 방식을 다루는 IT 더미 기사입니다. 시청 시간대와 감정 추정을 추천 모델이 반영하는 흐름을 설명합니다.',
+    },
+    {
+      title: '회사 메신저는 왜 점점 덜 시끄러워질까… 알림 설계의 재발명',
+      content:
+        '협업 도구의 알림 정책과 정보 밀도 조절을 분석하는 IT 더미 기사입니다. 집중을 해치지 않는 커뮤니케이션 구조가 왜 중요한지 짚습니다.',
+    },
   ],
   SPORTS: [
     {
@@ -158,6 +203,21 @@ const NEWS_TEMPLATES_BY_CATEGORY: Record<MediaCategory, NewsTemplate[]> = {
       title: '팬 커뮤니케이션 플랫폼 고도화… 응원 문화도 디지털 전환',
       content:
         '팬덤 플랫폼과 커뮤니티 경험 변화를 다루는 스포츠 더미 기사입니다. 실시간 참여성과 콘텐츠 연결 방식을 설명합니다.',
+    },
+    {
+      title: '점심시간 사내 풋살 부활… 하이브리드 근무가 만든 운동 시간표',
+      content:
+        '근무 유연화가 직장인 생활 체육 습관에 미친 변화를 다루는 스포츠 더미 기사입니다. 짧은 시간 운동 문화가 다시 살아나는 흐름을 전합니다.',
+    },
+    {
+      title: '출근길에 보는 한 경기… 세로형 스포츠 클립 경쟁 본격화',
+      content:
+        '모바일 짧은 영상 포맷이 스포츠 콘텐츠 유통을 어떻게 바꾸는지 다루는 스포츠 더미 기사입니다. 핵심 장면 압축 소비 흐름을 설명합니다.',
+    },
+    {
+      title: '응원도 조용한 취향 시대… 개인화 중계음 선택 기능 주목',
+      content:
+        '시청 환경 개인화와 스포츠 중계 소비 변화를 다루는 스포츠 더미 기사입니다. 팬 경험이 더 세밀하게 조정되는 흐름을 짚습니다.',
     },
   ],
   MAGAZINE: [
@@ -196,6 +256,21 @@ const NEWS_TEMPLATES_BY_CATEGORY: Record<MediaCategory, NewsTemplate[]> = {
       content:
         '업무용 도구를 라이프스타일의 확장으로 읽는 매거진 더미 기사입니다. 생산성보다 리듬과 감각의 변화에 초점을 둡니다.',
     },
+    {
+      title: '도시의 친절은 어디에서 시작되나… 환승 안내 한 문장의 힘',
+      content:
+        '교통 안내 문구와 목소리의 온도를 도시 감각 차원에서 풀어내는 매거진 더미 기사입니다. 작은 배려가 만드는 정서적 안전감을 이야기합니다.',
+    },
+    {
+      title: '아침을 덜 서두르게 만드는 것들… 요즘 출근길의 새로운 편의',
+      content:
+        '출근 동선에서 만나는 사소한 편의가 하루의 기분을 어떻게 바꾸는지 다루는 매거진 더미 기사입니다. 기능보다 감각적 체험에 집중합니다.',
+    },
+    {
+      title: '복지도 결국 리듬이다… 마음건강 상담이 일상에 스며드는 방식',
+      content:
+        '심리 지원 서비스를 삶의 루틴과 연결해 바라보는 매거진 더미 기사입니다. 필요할 때 조용히 기대는 장치의 중요성을 묘사합니다.',
+    },
   ],
   LOCAL: [
     {
@@ -233,15 +308,45 @@ const NEWS_TEMPLATES_BY_CATEGORY: Record<MediaCategory, NewsTemplate[]> = {
       content:
         '근무 형태 변화가 지역 이동량과 상권 구조에 미치는 영향을 짚는 지역 더미 기사입니다. 시민 생활 리듬 변화를 중심으로 설명합니다.',
     },
+    {
+      title: '새벽 배송보다 먼저 움직인 건 출근 동선… 동네 상권도 시간표 바뀌었다',
+      content:
+        '지역 상권이 직장인 출근 패턴 변화에 맞춰 영업 리듬을 조정하는 흐름을 다루는 지역 더미 기사입니다. 생활 시간표 변화가 지역경제에 미치는 영향을 설명합니다.',
+    },
+    {
+      title: '동네 복지관의 야간 상담 확대… 퇴근 후에도 문 열리는 지원',
+      content:
+        '퇴근 이후 이용 가능한 지역 복지 서비스 확대를 다루는 지역 더미 기사입니다. 접근성 개선이 실제 이용률로 이어지는지 짚습니다.',
+    },
+    {
+      title: '“말 한마디가 달라졌어요” 민원 응대 교육 뒤 현장 분위기 변화',
+      content:
+        '응대 교육이 현장 서비스 품질을 어떻게 바꾸는지 다루는 지역 더미 기사입니다. 시민 접점에서 체감되는 변화에 초점을 맞춥니다.',
+    },
   ],
 }
 
 export const NEWS_PER_MEDIA = 7
 
+function getRotationStart(seed: string, templateCount: number) {
+  const hash = seed.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0)
+
+  return hash % templateCount
+}
+
+function pickTemplates(seed: string, templates: NewsTemplate[]) {
+  const start = getRotationStart(seed, templates.length)
+
+  return Array.from({ length: NEWS_PER_MEDIA }, (_, index) => {
+    return templates[(start + index) % templates.length]
+  })
+}
+
 export function createNewsDummyList(media: MediaNewsInput): News[] {
   const templates = NEWS_TEMPLATES_BY_CATEGORY[media.category]
+  const selectedTemplates = pickTemplates(media.id, templates)
 
-  return templates.slice(0, NEWS_PER_MEDIA).map((template, index) => ({
+  return selectedTemplates.map((template, index) => ({
     id: `${media.id}-news-${index + 1}`,
     title: `${media.title} | ${template.title}`,
     thumbnail: `/news/${media.id}-${index + 1}.png`,

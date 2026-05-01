@@ -21,7 +21,7 @@ export function NewsListView() {
     <Tabs
       value={currentCategory}
       onValueChange={setCurrentCategory}
-      className="mt-12"
+      className="mt-4"
     >
       <NewsStandContent>
         <div className="overflow-hidden border border-[#D2DAE0] bg-white">

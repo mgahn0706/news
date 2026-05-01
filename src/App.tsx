@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Header } from './components/Header'
 import { HeadlineBar } from './components/newsStand/HeadlineBar'
@@ -51,20 +51,7 @@ function buildHeadlineItems(
     )
 }
 
-function App() {
-  const { isSubscribed, toggleSubscription, user } = useSubscription()
-  const [currentTab, setCurrentTab] = useState<CurrentTab>(DEFAULT_TAB)
-  const [viewMode, setViewMode] = useState<ViewMode>(DEFAULT_VIEW_MODE)
-  const [pagination, setPagination] = useState(0)
-  const visibleMedia =
-    currentTab === 'SUBSCRIBING'
-      ? mediaDummyList.filter((media) =>
-          user.subscribingMediaList.includes(media.id),
-        )
-      : mediaDummyList
-  const totalPages = Math.ceil(visibleMedia.length / MEDIA_PER_PAGE)
-  const pageStart = pagination * MEDIA_PER_PAGE
-  const pageItems = visibleMedia.slice(pageStart, pageStart + MEDIA_PER_PAGE)
+function RotatingHeadlineBar({ visibleMedia }: { visibleMedia: typeof mediaDummyList }) {
   const allHeadlineItems = visibleMedia.flatMap((media) =>
     media.news.map((news) => ({
       mediaId: media.id,
@@ -96,11 +83,6 @@ function App() {
     allHeadlineItems.find((item) => item.mediaId !== leftHeadline.mediaId) ??
     fallbackHeadline
 
-  useEffect(() => {
-    setLeftHeadlineIndex(0)
-    setRightHeadlineIndex(0)
-  }, [currentTab, user.subscribingMediaList, pagination])
-
   useTimer(
     () => {
       setLeftHeadlineIndex((currentIndex) => {
@@ -125,6 +107,34 @@ function App() {
     },
   )
 
+  if (!leftHeadline.mediaTitle || !leftHeadline.newsTitle) {
+    return null
+  }
+
+  return (
+    <HeadlineBar
+      leftHeadline={leftHeadline}
+      rightHeadline={rightHeadline}
+    />
+  )
+}
+
+function App() {
+  const { isSubscribed, toggleSubscription, user } = useSubscription()
+  const [currentTab, setCurrentTab] = useState<CurrentTab>(DEFAULT_TAB)
+  const [viewMode, setViewMode] = useState<ViewMode>(DEFAULT_VIEW_MODE)
+  const [pagination, setPagination] = useState(0)
+  const visibleMedia =
+    currentTab === 'SUBSCRIBING'
+      ? mediaDummyList.filter((media) =>
+          user.subscribingMediaList.includes(media.id),
+        )
+      : mediaDummyList
+  const totalPages = Math.ceil(visibleMedia.length / MEDIA_PER_PAGE)
+  const pageStart = pagination * MEDIA_PER_PAGE
+  const pageItems = visibleMedia.slice(pageStart, pageStart + MEDIA_PER_PAGE)
+  const headlineScopeKey = `${currentTab}:${pagination}:${user.subscribingMediaList.join(',')}`
+
   function renderGrid() {
     return (
       <MediaGrid
@@ -145,7 +155,13 @@ function App() {
 
   function renderCurrentView() {
     if (viewMode === 'LIST') {
-      return <NewsListView />
+      return (
+        <NewsListView
+          items={visibleMedia}
+          isSubscribed={isSubscribed}
+          onToggleSubscription={toggleSubscription}
+        />
+      )
     }
 
     return renderGrid()
@@ -157,12 +173,10 @@ function App() {
       aria-label="News stand application"
     >
       <Header />
-      {leftHeadline.mediaTitle && leftHeadline.newsTitle ? (
-        <HeadlineBar
-          leftHeadline={leftHeadline}
-          rightHeadline={rightHeadline}
-        />
-      ) : null}
+      <RotatingHeadlineBar
+        key={headlineScopeKey}
+        visibleMedia={visibleMedia}
+      />
       <TabPanel
         currentTab={currentTab}
         onTabChange={(value) => {

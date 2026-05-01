@@ -23,5 +23,5 @@ export function useTimer(
     return () => {
       window.clearInterval(timerId)
     }
-  }, [delay, enabled, onTick])
+  }, [delay, enabled])
 }

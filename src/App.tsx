@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Header } from './components/Header'
 import { HeadlineBar } from './components/newsStand/HeadlineBar'
 import { MediaGrid } from './components/newsStand/MediaGrid'
+import { NewsListView } from './components/newsStand/NewsListView'
 import { TabPanel } from './components/newsStand/TabPanel'
 import { mediaDummyList } from './fixtures/mediaDummyList'
 import { useSubscription } from './hooks/useSubscription'
@@ -142,6 +143,14 @@ function App() {
     )
   }
 
+  function renderCurrentView() {
+    if (viewMode === 'LIST') {
+      return <NewsListView />
+    }
+
+    return renderGrid()
+  }
+
   return (
     <main
       className="min-h-screen bg-[#FEFEFE] pb-16 text-[#14212B]"
@@ -165,8 +174,8 @@ function App() {
         subscribedCount={user.subscribingMediaList.length}
       >
         {{
-          all: viewMode === 'GRID' ? renderGrid() : null,
-          subscribing: viewMode === 'GRID' ? renderGrid() : null,
+          all: renderCurrentView(),
+          subscribing: renderCurrentView(),
         }}
       </TabPanel>
     </main>

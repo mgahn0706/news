@@ -1,6 +1,5 @@
-import { useState } from 'react'
-
 import type { Media } from '../../type/types'
+import { MediaGridItem } from './mediaGridItem'
 
 type MediaGridProps = {
   items: Media[]
@@ -11,36 +10,6 @@ type MediaGridProps = {
 }
 
 const GRID_CAPACITY = 24
-
-function MediaCard({ media }: { media: Media }) {
-  const [imageError, setImageError] = useState(false)
-
-  return (
-    <article className="flex h-[154px] items-center justify-center bg-white p-4">
-      <div className="flex w-full max-w-[122px] flex-col items-center gap-3">
-        <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-[#D2DAE0] bg-[#F5F7F9]">
-          {!imageError ? (
-            <img
-              src={media.image}
-              alt={`${media.title} logo`}
-              className="h-full w-full object-cover"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <span className="px-2 text-center text-[11px] font-semibold leading-tight tracking-[-0.01em] text-[#14212B]">
-              {media.title}
-            </span>
-          )}
-        </div>
-        <div className="text-center">
-          <p className="line-clamp-2 break-keep text-sm leading-[1.15] font-medium tracking-[-0.01em] text-[#14212B]">
-            {media.title}
-          </p>
-        </div>
-      </div>
-    </article>
-  )
-}
 
 function PaginationChevron({
   direction,
@@ -104,7 +73,12 @@ export function MediaGrid({
         <div className="overflow-hidden rounded-none border border-[#D2DAE0] bg-[#D2DAE0]">
           <div className="grid grid-cols-2 gap-px bg-[#D2DAE0] sm:grid-cols-3 lg:grid-cols-6">
             {items.map((media) => (
-              <MediaCard key={media.id} media={media} />
+              <MediaGridItem
+                key={media.id}
+                id={media.id}
+                title={media.title}
+                image={media.image}
+              />
             ))}
             {Array.from({ length: emptyCells }, (_, index) => (
               <div

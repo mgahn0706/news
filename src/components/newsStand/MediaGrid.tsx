@@ -5,6 +5,8 @@ type MediaGridProps = {
   items: Media[]
   currentPage: number
   totalPages: number
+  isSubscribed: (mediaId: string) => boolean
+  onToggleSubscription: (mediaId: string) => void
   onPreviousPage: () => void
   onNextPage: () => void
 }
@@ -71,6 +73,8 @@ export function MediaGrid({
   items,
   currentPage,
   totalPages,
+  isSubscribed,
+  onToggleSubscription,
   onPreviousPage,
   onNextPage,
 }: MediaGridProps) {
@@ -97,6 +101,8 @@ export function MediaGrid({
                 id={media.id}
                 title={media.title}
                 image={media.image}
+                subscribed={isSubscribed(media.id)}
+                onToggleSubscription={onToggleSubscription}
               />
             ))}
             {Array.from({ length: emptyCells }, (_, index) => (

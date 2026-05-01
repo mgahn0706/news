@@ -6,15 +6,26 @@ type MediaGridItemProps = {
   id: string
   title: string
   image: string
+  subscribed: boolean
+  onToggleSubscription: (mediaId: string) => void
 }
 
-export function MediaGridItem({ id, title, image }: MediaGridItemProps) {
+export function MediaGridItem({
+  id,
+  title,
+  image,
+  subscribed,
+  onToggleSubscription,
+}: MediaGridItemProps) {
   const [imageError, setImageError] = useState(false)
+  const baseBackground = subscribed
+    ? 'bg-gradient-to-br from-white via-[#FCFCFF] to-[#F3F6FF]'
+    : 'bg-white'
 
   return (
     <article
       id={id}
-      className="group relative aspect-video bg-white p-4 transition-colors hover:bg-[#F5F7F9]"
+      className={`group relative aspect-video p-4 transition-colors hover:bg-[#F5F7F9] ${baseBackground}`}
     >
       <div className="absolute inset-0 flex items-center justify-center p-4 transition-opacity group-hover:opacity-0">
         <div className="flex w-full max-w-[122px] flex-col items-center gap-3">
@@ -42,7 +53,10 @@ export function MediaGridItem({ id, title, image }: MediaGridItemProps) {
 
       <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
         <div className="pointer-events-none group-hover:pointer-events-auto">
-          <SubscriptionButton />
+          <SubscriptionButton
+            subscribed={subscribed}
+            onClick={() => onToggleSubscription(id)}
+          />
         </div>
       </div>
     </article>

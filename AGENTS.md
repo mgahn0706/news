@@ -13,7 +13,9 @@ Guidance for Codex and similar coding agents working in this repository.
 - Entry points: `src/main.tsx`, `src/App.tsx`.
 - Static assets live under `public/` and `src/assets/`.
 - Design source of truth: `docs/docs-design-spec.pdf` and `docs/docs-design-system.pdf`.
+- Validation guide: `docs/checklist.md`.
 - Treat the PDFs above as authoritative product requirements, not inspiration. When a request touches UI, layout, interaction, copy hierarchy, or styling, follow those documents strictly.
+- Use `docs/checklist.md` to validate affected user scenarios before closing any UI-related task.
 
 ## Working Rules
 
@@ -73,6 +75,7 @@ Guidance for Codex and similar coding agents working in this repository.
 ## Verification
 
 - Run targeted checks after changes when possible.
+- For UI work, validate the relevant scenario list in `docs/checklist.md`, not just typecheck/build output.
 - Primary commands:
   - `npm run build`
   - `npm run lint`

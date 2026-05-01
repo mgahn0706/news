@@ -45,29 +45,8 @@ body {
   animation: headline-slide-up 0.55s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes list-tab-progress {
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 100%;
-  }
-}
-
-.list-tab-progress {
-  animation-name: list-tab-progress;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
-
-.list-tab-progress[data-paused='true'] {
-  animation-play-state: paused;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .headline-slide-up,
-  .list-tab-progress {
+  .headline-slide-up {
     animation: none;
   }
 }

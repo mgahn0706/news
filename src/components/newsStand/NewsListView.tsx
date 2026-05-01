@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { formatKoreanDate } from '../../libs/date'
-import { useTimer } from '../../hooks/useTimer'
 import type { Media, MediaCategory } from '../../type/types'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/Tabs'
+import { ChevronRailButton } from './ChevronRailButton'
 import { NewsStandContent } from './Layout'
 import { SubscriptionButton } from './SubscriptionButton'
 
@@ -86,6 +86,74 @@ function ThumbnailPreview({
   )
 }
 
+function ActiveCategoryProgress({
+  paused,
+  onComplete,
+}: {
+  paused: boolean
+  onComplete: () => void
+}) {
+  const [progressRatio, setProgressRatio] = useState(0)
+  const animationFrameRef = useRef<number | null>(null)
+  const startTimeRef = useRef<number | null>(null)
+  const elapsedMsRef = useRef(0)
+
+  useEffect(() => {
+    if (paused) {
+      if (animationFrameRef.current !== null) {
+        window.cancelAnimationFrame(animationFrameRef.current)
+      }
+
+      return
+    }
+
+    function step(timestamp: number) {
+      if (startTimeRef.current === null) {
+        startTimeRef.current = timestamp - elapsedMsRef.current
+      }
+
+      const elapsedMs = timestamp - startTimeRef.current
+      const nextProgressRatio = Math.min(elapsedMs / AUTO_ADVANCE_DELAY, 1)
+
+      elapsedMsRef.current = elapsedMs
+      setProgressRatio(nextProgressRatio)
+
+      if (nextProgressRatio >= 1) {
+        startTimeRef.current = null
+        elapsedMsRef.current = 0
+        onComplete()
+        return
+      }
+
+      animationFrameRef.current = window.requestAnimationFrame(step)
+    }
+
+    animationFrameRef.current = window.requestAnimationFrame(step)
+
+    return () => {
+      if (animationFrameRef.current !== null) {
+        window.cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
+  }, [onComplete, paused])
+
+  const progressWidth = `${progressRatio * 100}%`
+
+  return (
+    <>
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 bg-[#7890E7]"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 left-0 z-0 bg-[#4362D0]"
+        style={{ width: progressWidth }}
+      />
+    </>
+  )
+}
+
 export function NewsListView({
   items,
   isSubscribed,
@@ -122,30 +190,148 @@ export function NewsListView({
     return categoryItems[currentIndex]
   }
 
-  const activeTabConfig = CATEGORY_TABS.find(
-    (tab) => tab.value === currentCategory,
-  )
-  const activeCategoryItems = activeTabConfig
-    ? getCategoryItems(activeTabConfig.categories)
-    : []
+  function getNextCategoryValue(currentValue: CategoryTabValue) {
+    const currentTabIndex = CATEGORY_TABS.findIndex(
+      (tab) => tab.value === currentValue,
+    )
 
-  useTimer(
-    () => {
-      if (!activeTabConfig || activeCategoryItems.length <= 1) {
-        return
+    for (let offset = 1; offset <= CATEGORY_TABS.length; offset += 1) {
+      const nextTab =
+        CATEGORY_TABS[(currentTabIndex + offset) % CATEGORY_TABS.length]
+
+      if (getCategoryItems(nextTab.categories).length > 0) {
+        return nextTab.value
       }
+    }
 
+    return currentValue
+  }
+
+  function getPreviousCategoryValue(currentValue: CategoryTabValue) {
+    const currentTabIndex = CATEGORY_TABS.findIndex(
+      (tab) => tab.value === currentValue,
+    )
+
+    for (let offset = 1; offset <= CATEGORY_TABS.length; offset += 1) {
+      const previousTab =
+        CATEGORY_TABS[
+          (currentTabIndex - offset + CATEGORY_TABS.length) %
+            CATEGORY_TABS.length
+        ]
+
+      if (getCategoryItems(previousTab.categories).length > 0) {
+        return previousTab.value
+      }
+    }
+
+    return currentValue
+  }
+
+  const activeTabConfig = CATEGORY_TABS.find((tab) => tab.value === currentCategory)
+
+  function advanceToNextMedia() {
+    if (!activeTabConfig) {
+      return
+    }
+
+    const activeCategoryItems = getCategoryItems(activeTabConfig.categories)
+
+    if (activeCategoryItems.length === 0) {
+      return
+    }
+
+    const currentIndex = categoryMediaIndexMap[activeTabConfig.value]
+    const isLastMedia = currentIndex >= activeCategoryItems.length - 1
+
+    if (isLastMedia) {
+      const nextCategoryValue = getNextCategoryValue(activeTabConfig.value)
+
+      setCurrentCategory(nextCategoryValue)
+      return
+    }
+
+    setCategoryMediaIndexMap((currentMap) => ({
+      ...currentMap,
+      [activeTabConfig.value]: currentMap[activeTabConfig.value] + 1,
+    }))
+  }
+
+  function moveToPreviousMedia() {
+    if (!activeTabConfig) {
+      return
+    }
+
+    const activeCategoryItems = getCategoryItems(activeTabConfig.categories)
+
+    if (activeCategoryItems.length === 0) {
+      return
+    }
+
+    const currentIndex = categoryMediaIndexMap[activeTabConfig.value]
+
+    if (currentIndex > 0) {
       setCategoryMediaIndexMap((currentMap) => ({
         ...currentMap,
-        [activeTabConfig.value]:
-          (currentMap[activeTabConfig.value] + 1) % activeCategoryItems.length,
+        [activeTabConfig.value]: currentMap[activeTabConfig.value] - 1,
       }))
-    },
-    {
-      delay: AUTO_ADVANCE_DELAY,
-      enabled: activeCategoryItems.length > 1 && !isTickerPaused,
-    },
-  )
+      return
+    }
+
+    const previousCategoryValue = getPreviousCategoryValue(activeTabConfig.value)
+
+    if (previousCategoryValue === activeTabConfig.value) {
+      return
+    }
+
+    const previousCategoryConfig = CATEGORY_TABS.find(
+      (tab) => tab.value === previousCategoryValue,
+    )
+
+    if (!previousCategoryConfig) {
+      return
+    }
+
+    const previousCategoryItems = getCategoryItems(previousCategoryConfig.categories)
+
+    setCategoryMediaIndexMap((currentMap) => ({
+      ...currentMap,
+      [previousCategoryValue]: Math.max(previousCategoryItems.length - 1, 0),
+    }))
+    setCurrentCategory(previousCategoryValue)
+  }
+
+  function moveToNextMedia() {
+    advanceToNextMedia()
+  }
+
+  const hasPreviousMedia = (() => {
+    if (!activeTabConfig) {
+      return false
+    }
+
+    const currentIndex = categoryMediaIndexMap[activeTabConfig.value]
+
+    if (currentIndex > 0) {
+      return true
+    }
+
+    return getPreviousCategoryValue(activeTabConfig.value) !== activeTabConfig.value
+  })()
+
+  const hasNextMedia = (() => {
+    if (!activeTabConfig) {
+      return false
+    }
+
+    const activeCategoryItems = getCategoryItems(activeTabConfig.categories)
+    const currentIndex = categoryMediaIndexMap[activeTabConfig.value]
+
+    if (currentIndex < activeCategoryItems.length - 1) {
+      return true
+    }
+
+    return getNextCategoryValue(activeTabConfig.value) !== activeTabConfig.value
+  })()
 
   return (
     <Tabs
@@ -156,17 +342,24 @@ export function NewsListView({
       className="mt-4"
     >
       <NewsStandContent>
-        <div
-          className="overflow-hidden border border-[#D2DAE0] bg-white"
-          onMouseEnter={() => setIsTickerPaused(true)}
-          onMouseLeave={() => setIsTickerPaused(false)}
-          onFocusCapture={() => setIsTickerPaused(true)}
-          onBlurCapture={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget)) {
-              setIsTickerPaused(false)
-            }
-          }}
-        >
+        <div className="relative">
+          <ChevronRailButton
+            direction="left"
+            onClick={moveToPreviousMedia}
+            disabled={!hasPreviousMedia}
+            ariaLabel="Previous media"
+          />
+          <div
+            className="overflow-hidden border border-[#D2DAE0] bg-white"
+            onMouseEnter={() => setIsTickerPaused(true)}
+            onMouseLeave={() => setIsTickerPaused(false)}
+            onFocusCapture={() => setIsTickerPaused(true)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) {
+                setIsTickerPaused(false)
+              }
+            }}
+          >
           <TabsList className="flex h-10 w-full rounded-none border-0 bg-[#F5F7F9] p-0">
             {CATEGORY_TABS.map((tab) => {
               const categoryItems = getCategoryItems(tab.categories)
@@ -184,15 +377,13 @@ export function NewsListView({
                   className="group relative h-10 flex-1 overflow-hidden rounded-none border-r border-[#D2DAE0] bg-transparent px-3 text-sm font-medium tracking-[-0.01em] last:border-r-0 data-[state=active]:bg-transparent data-[state=active]:font-bold data-[state=active]:text-white data-[state=inactive]:text-[#5F6E76]"
                 >
                   {isActive ? (
-                    <span
-                      aria-hidden="true"
+                    <ActiveCategoryProgress
                       key={`${tab.value}-${activeMedia?.id ?? 'empty'}`}
-                      data-paused={isTickerPaused ? 'true' : 'false'}
-                      className="list-tab-progress absolute inset-y-0 left-0 z-0 bg-[#7890E7]"
-                      style={{ animationDuration: `${AUTO_ADVANCE_DELAY}ms` }}
+                      paused={isTickerPaused}
+                      onComplete={advanceToNextMedia}
                     />
                   ) : null}
-                  <span className="flex w-full items-center justify-between gap-2">
+                  <span className="relative z-10 flex w-full items-center justify-between gap-2">
                     <span className="relative z-10 truncate">{tab.label}</span>
                     <span className="relative z-10 hidden font-mono text-xs font-medium tabular-nums text-current/70 group-data-[state=active]:inline-flex">
                       <span className="text-current">{currentIndex}</span>
@@ -270,6 +461,13 @@ export function NewsListView({
               })()}
             </TabsContent>
           ))}
+          </div>
+          <ChevronRailButton
+            direction="right"
+            onClick={moveToNextMedia}
+            disabled={!hasNextMedia}
+            ariaLabel="Next media"
+          />
         </div>
       </NewsStandContent>
     </Tabs>

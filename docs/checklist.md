@@ -18,6 +18,18 @@ Use this checklist before and after any UI change. The goal is to keep Codex ali
 - [ ] The opened-press layout must support tab/category changes and timed progress behavior.
 - [ ] The ticker must remain present and behave consistently across grid and opened-press states.
 
+## User-Centered E2E Validation
+
+- [ ] The user can switch between the full press outlet tab and the subscribed press outlet tab to change the visible outlet scope.
+- [ ] The user can see two simultaneous news lanes in the top headline bar and confirm that headlines rotate automatically after a fixed interval.
+- [ ] The user can use the `GRID` and `LIST` buttons to explore the same newsstand dataset in two different modes.
+- [ ] The user can browse multiple press outlets at once in grid view and move to the next set with pagination and left/right navigation buttons.
+- [ ] The user can check subscription state in grid view and subscribe to or unsubscribe from a press outlet.
+- [ ] The user can browse press outlets by category tab in list view and focus on the detailed news area for each outlet.
+- [ ] The user can move to the previous or next press outlet from list view with the left and right navigation buttons.
+- [ ] The user can confirm current category progress in list view and experience a natural continuation into the next category after the last item.
+- [ ] The user can pause auto-advance by hovering over the list view area or moving keyboard focus into it, and auto-advance resumes after the interaction ends.
+
 ## Layout Validation
 
 - [ ] Check the desktop-first layout against the 1280x720 spec assumptions.

@@ -52,6 +52,7 @@ Only place domain-agnostic pieces such as button groups, tabs, and badges in `sr
 
 ## React / TypeScript Rules
 
+- Follow code style strictly. Do not treat these rules as suggestions or as something to “mostly” match.
 - Keep the existing functional-component style.
 - Add `useMemo` and `useCallback` only when there is a real performance bottleneck or a concrete referential-stability need.
 - Add explicit types when inference is ambiguous.
@@ -115,3 +116,4 @@ Only place domain-agnostic pieces such as button groups, tabs, and badges in `sr
 - Add short comments only when the intent is not obvious from the code itself.
 - Follow the existing placement pattern for static resources in `public/` or `src/assets/`.
 - Put new utilities in `src/libs/`, new fixtures in `src/fixtures/`, and new types in `src/type/`.
+- If a command, edit, or generated diff would create code that violates these style rules, stop and adjust the implementation before proceeding.

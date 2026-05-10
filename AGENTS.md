@@ -21,6 +21,8 @@ When a guess conflicts with the docs, the docs win.
 
 - When editing implementation files, always reference `docs/coding-convention.md`.
 - For working style, validation, review, questions, and reporting, always reference `docs/coding-behavior.md`.
+- Code style rules must be followed strictly, not approximately. If a change conflicts with the documented code style, rewrite the change to match the documented style.
+- Before each meaningful command or edit, quickly check which rules from `AGENTS.md`, `docs/coding-convention.md`, `docs/coding-behavior.md`, and `docs/checklist.md` apply to that action.
 - For UI validation, always use `docs/checklist.md`.
 - Checklist validation must also be treated as overall bug testing. Use the full checklist to look for possible regressions, broken state flows, accessibility gaps, and spec mismatches, not just to mark boxes.
 - If documents conflict, interpret them in this order: user request, design PDFs, checklist, then the detailed rule documents.

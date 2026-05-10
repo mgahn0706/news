@@ -25,6 +25,8 @@ npm run lint     # Run ESLint
 - Extend the existing structure before introducing new patterns.
 - If implementation and documentation conflict during the task, follow the documentation over the implementation.
 - Do not stop at long explanation when the work can be completed directly. Prefer making the change and validating it when feasible.
+- Before each meaningful command, edit, validation step, or git action, quickly verify which project rules apply and execute the action only after that check.
+- If a command result reveals a style violation or process violation, treat it as something to fix immediately rather than something to leave for later.
 
 ## Review Rules
 

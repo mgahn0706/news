@@ -42,6 +42,7 @@ npm run lint     # Run ESLint
 
 - When possible, run `npm run build` and `npm run lint` after changes.
 - For UI work, do not stop at build or lint. Also verify the relevant scenarios in `docs/checklist.md`.
+- Treat checklist validation as broad bug testing across the whole affected flow. Use it to actively look for possible regressions, broken interactions, state bugs, accessibility issues, and off-spec behavior.
 - If validation could not be completed, state the reason clearly in the final response.
 - When validation succeeds, record which scenarios were checked.
 

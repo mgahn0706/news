@@ -1,193 +1,34 @@
-# AGENTS.md - 뉴스스탠드 프로젝트
+# AGENTS.md - News Stand Project
 
-이 문서는 `/Users/teseuteu/news-stand/news` 저장소 전체에 적용된다.
-직접적인 사용자 요청이 있으면 그 지시를 우선하고, 그 외에는 이 문서를 기본 작업 규약으로 따른다.
+This document applies to the entire `/Users/teseuteu/news-stand/news` repository.
+If the user gives a direct instruction, follow that first. Otherwise, use this document as the default working policy.
 
-## 프로젝트 개요
+## Project Overview
 
-네이버 뉴스스탠드 스타일의 데스크톱 우선 웹 UI 프로젝트.
-사용자는 언론사 그리드를 탐색하고 구독/해지할 수 있으며, 목록 보기에서 카테고리별 기사 묶음을 확인할 수 있다.
+A desktop-first web UI project inspired by Naver News Stand.
+Users can browse a press-outlet grid, subscribe or unsubscribe to outlets, and inspect grouped article lists by category in list view.
 
-- 디자인 스펙: `docs/docs-design-spec.pdf`
-- 디자인 시스템: `docs/docs-design-system.pdf`
-- 구현 체크리스트: `docs/checklist.md`
+- Design spec: `docs/docs-design-spec.pdf`
+- Design system: `docs/docs-design-system.pdf`
+- Implementation checklist: `docs/checklist.md`
+- Coding convention: `docs/coding-convention.md`
+- Coding behavior: `docs/coding-behavior.md`
 
-UI, 레이아웃, 상호작용, 타이포그래피, 색상, 간격을 건드리는 작업이라면 먼저 관련 PDF를 확인하고 그 기준대로 구현한다.
-추측이나 일반적인 대시보드 관성보다 문서가 우선이다.
+If a task affects UI, layout, interaction, typography, color, or spacing, check the relevant PDFs first and implement against them.
+When a guess conflicts with the docs, the docs win.
 
-## 기술 스택
+## Document Usage
 
-| 항목 | 현재 선택 |
-| --- | --- |
-| 프레임워크 | React 19 + TypeScript |
-| 번들러 | Vite 8 |
-| 스타일 | Tailwind CSS v4 + `src/index.css` 전역 스타일 |
-| 린트 | ESLint 10 |
-| 상태관리 | `useState` + 커스텀 훅 (외부 전역 상태 라이브러리 없음) |
+- When editing implementation files, always reference `docs/coding-convention.md`.
+- For working style, validation, review, questions, and reporting, always reference `docs/coding-behavior.md`.
+- For UI validation, always use `docs/checklist.md`.
+- If documents conflict, interpret them in this order: user request, design PDFs, checklist, then the detailed rule documents.
 
-## 주요 커맨드
-
-```bash
-npm run dev      # 개발 서버 시작
-npm run build    # 타입 체크 후 프로덕션 빌드
-npm run preview  # 빌드 결과 미리보기
-npm run lint     # ESLint 검사
-```
-
-## 디렉토리 구조
-
-```text
-src/
-├── App.tsx                          # 루트 조합, 상위 뷰 상태 보유
-├── main.tsx                         # 엔트리 포인트
-├── index.css                        # Tailwind import + 전역 스타일 + 모션 정의
-├── assets/                          # 정적 이미지 에셋
-├── const/                           # 재사용되는 상수, 설정값, key 목록
-├── components/
-│   ├── Header.tsx                   # 상단 헤더
-│   ├── ui/                          # 범용 UI 프리미티브
-│   └── newsStand/                   # 뉴스스탠드 도메인 컴포넌트
-├── fixtures/                        # 언론사/기사 목업 데이터
-├── hooks/                           # 상태와 뷰 로직 훅
-├── libs/                            # 공용 유틸리티
-└── type/                            # TypeScript 타입 정의
-```
-
-도메인 전용 UI는 `src/components/newsStand/`에 둔다.
-범용 버튼 그룹, 탭, 배지처럼 도메인에 묶이지 않는 조각만 `src/components/ui/`에 둔다.
-
-## 현재 아키텍처 기준
-
-- 루트 상태는 `src/App.tsx`에 모인다.
-- `App.tsx`는 top-level state wiring, 주요 화면 조합, 큰 뷰 전환만 담당한다.
-- `App.tsx` 안에 별도 이름을 가진 보조 컴포넌트나 복잡한 렌더링 단위를 중첩 정의하지 않는다. `RotatingHeadlineBar` 같은 단위는 파일 밖이나 별도 컴포넌트 파일로 분리한다.
-- 구독 상태는 `src/hooks/useSubscription.ts`가 관리한다.
-- 그리드/구독 탭 기준의 가시 언론사와 페이지네이션은 `src/hooks/useNewsStandView.ts`가 계산한다.
-- 목록 보기 내부 카테고리 탭, 활성 언론사 이동, 자동 진행 상태는 `src/hooks/useNewsListView.ts`가 관리한다.
-- 타이머 기반 자동 전환은 `src/hooks/useTimer.ts`를 공통으로 사용한다.
-- 목업 데이터는 `src/fixtures/`에서 관리하고, 새 더미 데이터도 같은 위치에 둔다.
-- 공용 타입은 `src/type/types.ts`에 둔다.
-- 재사용되는 상수와 설정 정의는 `src/const/`를 source of truth로 사용한다.
-
-새 기능을 추가할 때는 기존 구조를 우선 확장한다.
-상태를 새 전역 저장소로 빼거나 불필요한 추상화를 추가하지 않는다.
-
-## React / TypeScript 작업 규칙
-
-- 함수형 컴포넌트와 현재 코드베이스 스타일을 유지한다.
-- `useMemo`, `useCallback`은 실제 병목이나 참조 안정성이 필요한 경우에만 추가한다.
-- 타입 추론이 모호하면 명시 타입을 적는다.
-- 상수 배열이나 설정 객체를 만들 때는 그 구조를 설명하는 대응 type도 함께 설계한다.
-- 같은 도메인 정보를 여러 const에 평행 하드코딩하지 않는다. 하나의 source-of-truth const 또는 type에서 파생 가능한 값은 계산해서 재사용한다.
-- 예를 들어 탭 정의 배열이 있으면 union type, 상태 map key, 초기값 객체는 가능하면 그 정의에서 파생한다.
-- `as SomeType[]` 같은 국소 캐스팅을 반복하기보다, 상수를 감싸는 상위 정의 type을 먼저 만들고 그 type으로 전체 구조를 선언한다.
-- 초기 상태용 객체가 설정 배열과 같은 key 집합을 가져야 한다면, 별도 하드코딩된 map을 중복 선언하기보다 생성 함수나 파생 타입으로 일치성을 강제한다.
-- 공용 UI 컴포넌트는 자유도가 높은 style container처럼 설계하지 않는다. `Badge` 같은 primitive는 semantic variant, size, state처럼 제한된 props를 우선 제공한다.
-- 공용 primitive에서 과도하게 넓은 `className`, `style`, 임의 색상값, 임의 spacing 주입으로 디자인을 매번 바꾸는 패턴은 피한다.
-- 공용 primitive의 props는 재사용성을 위한 추상화가 아니라 디자인 일관성을 강제하는 인터페이스여야 한다.
-- 디자인 변화가 많아질 것 같으면 props를 계속 열어두기보다 허용 variant 집합을 늘리거나, 실제로는 도메인 전용 컴포넌트로 분리하는 쪽을 우선 검토한다.
-- JSX 안에 직접 길게 작성되는 SVG는 인라인 하드코딩하지 말고, 별도 파일의 아이콘 컴포넌트로 분리해서 관리한다.
-- 한 파일 안에서만 잠깐 쓰는 값이 아니라면 하드코딩된 상수는 `src/const/`로 모은다. 탭 정의, 레이블 맵, key 목록, 타이머 상수, 화면 설정값을 컴포넌트 파일에 반복 선언하지 않는다.
-- 컴포넌트 파일은 PascalCase, 훅/유틸/픽스처 모듈은 camelCase를 사용한다.
-- 재사용 가능한 새 뷰 조각은 `App.tsx` 안에 길게 인라인하지 말고 컴포넌트로 분리한다.
-- 사용자 변경사항이 있을 수 있으므로, 관련 없는 수정은 되돌리지 않는다.
-
-## 스타일 작업 규칙
-
-- 기존 시각 언어를 유지한다. 사용자가 재디자인을 명시하지 않았다면 임의로 분위기를 바꾸지 않는다.
-- 현재 프로젝트는 Tailwind 유틸리티 클래스와 `src/index.css` 전역 스타일을 함께 사용한다.
-- 색상은 분리된 전용 파일에서 관리한다. 컴포넌트, 페이지, 훅 파일 안에 임의의 hex 값을 반복 선언하지 않는다.
-- 새 색상을 추가하거나 기존 색상을 수정할 때는 전용 색상 파일에 먼저 정의하고, 다른 파일에서는 그 토큰만 참조한다.
-- 반복되는 간격, 모션 값은 가능하면 전역 토큰이나 공통 규칙으로 정리한다.
-- PDF에 없는 장식 요소를 추가하지 않는다.
-  - 과한 그림자
-  - 그라디언트
-  - 글로우
-  - 두꺼운 보더
-  - 마케팅 랜딩 페이지식 히어로 연출
-
-## 디자인 시스템 규칙
-
-- 데스크톱 우선 1280x720 기준 레이아웃을 유지한다.
-- 메인 콘텐츠 폭과 정보 밀도는 스펙을 따른다.
-- 언론사 표현은 이미지 로고보다 타이포그래피 중심 워드마크를 우선한다.
-- 강조색은 꼭 필요한 상태에만 제한적으로 사용한다.
-- 기본 바디 텍스트는 16px 기준을 유지하고, 메타/카운터 계층은 문서 정의를 따른다.
-- 1px 경계선, 문서에 정의된 반경, 절제된 여백 체계를 유지한다.
-- `docs/checklist.md`에 적힌 시나리오를 깨는 변경은 허용하지 않는다.
-
-문서에서 반복적으로 등장하는 핵심 색상은 다음 범위를 기준으로 유지한다.
-`#14212B`, `#5F6E76`, `#879298`, `#D2DAE0`, `#F5F7F9`, `#F7F7FC`, `#FFFFFF`, `#FEFEFE`, `#7890E7`, `#4362D0`
-
-색상 사용 시에는 위 값을 각 컴포넌트에 직접 흩뿌리지 말고, 분리된 색상 정의 파일을 source of truth로 유지한다.
-
-## 인터랙션 규칙
-
-- 헤드라인 바는 자동 회전 동작을 유지해야 한다.
-- 구독 탭과 전체 탭 전환 시 현재 컬렉션 기준으로 페이지네이션이 맞게 동작해야 한다.
-- 그리드 보기와 목록 보기 전환은 현재 상태 흐름을 깨지 않도록 구현한다.
-- 목록 보기의 카테고리 탭과 자동 진행 동작은 `useNewsListView` 흐름에 맞춰 유지한다.
-- hover 기반 인터랙션은 keyboard focus에서도 접근 가능해야 한다.
-- `prefers-reduced-motion` 환경에서는 비필수 애니메이션을 줄이거나 제거한다.
-
-## 접근성 규칙
-
-- 탭은 적절한 tab semantics를 사용한다.
-- 클릭 가능한 요소는 button/link semantics를 유지한다.
-- 선택 상태가 있는 컨트롤은 `aria-selected` 등 적절한 속성으로 상태를 드러낸다.
-- 핵심 조작을 포인터 전용으로 숨기지 않는다.
-- 텍스트 대비는 WCAG AA를 유지한다.
-
-## 작업 방식
-
-- 변경은 작고 국소적으로 유지한다.
-- 새 파일 추가보다 기존 파일 수정이 더 적절하면 기존 파일을 우선 수정한다.
-- 주석은 코드만으로 의도가 명확하지 않을 때만 짧게 추가한다.
-- 정적 리소스는 `public/` 또는 `src/assets/`의 기존 배치 방식을 따른다.
-- 새 유틸은 `src/libs/`, 새 픽스처는 `src/fixtures/`, 새 타입은 `src/type/`에 둔다.
-
-## 커밋 규칙
-
-모든 커밋 로그는 아래 형식을 반드시 따른다.
-feature list 번호를 제목에 포함하고, 본문에는 `확인내용`, `이해 안 됐던 부분`을 반드시 기록한다.
-`이해 안 됐던 부분`은 Codex나 에이전트의 혼란이 아니라, 사용자가 작업 중 헷갈렸던 점, 확인이 필요했던 점, 또는 구현하면서 다시 짚어야 했던 포인트를 기록하는 항목으로 취급한다.
-번호는 프로젝트 내에서 하나씩 증가하는 단일 시퀀스를 따른다. 같은 번호를 반복 사용하지 않는다.
-
-```text
-<type>: #<feature-list-number> <title>
-
-- 확인내용: <implemented detail, what was verified, or follow-up decision>
-- 이해 안 됐던 부분: <what the user found confusing, needed to double-check, or revisited during implementation, or "없음">
-```
-
-예시:
-
-```text
-feat: #3 뉴스 카드 컴포넌트
-
-- 확인내용: 컴포넌트 배치 확인, 구조가 복잡해서 컴포넌트 분리 추가 진행
-- 이해 안 됐던 부분: useCallback 왜 사용했는지 확인함
-```
-
-허용 타입은 `feat`, `fix`, `style`, `refactor`, `chore`, `docs`를 기본으로 한다.
-번호는 커밋 타입과 무관하게 feature list 기준 번호를 사용한다.
-본문 두 항목은 생략하지 않는다.
-에이전트 자신의 불확실성이나 조사 메모를 이 항목에 대신 적지 않는다.
-
-## 검증
-
-가능하면 변경 후 아래를 기준으로 검증한다.
+## Main Commands
 
 ```bash
-npm run build
-npm run lint
+npm run dev      # Start the dev server
+npm run build    # Type-check and build for production
+npm run preview  # Preview the production build
+npm run lint     # Run ESLint
 ```
-
-UI 작업이라면 빌드나 린트만으로 끝내지 말고 `docs/checklist.md`의 관련 시나리오를 함께 확인한다.
-검증을 못 했다면 최종 응답에서 이유를 명확히 적는다.
-
-## 응답 기대사항
-
-- 무엇을 바꿨는지 짧고 명확하게 보고한다.
-- 어떤 검증을 했는지 함께 적는다.
-- 남아 있는 가정, 리스크, 미확인 사항이 있으면 짧게 분리해서 적는다.

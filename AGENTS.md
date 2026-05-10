@@ -27,6 +27,14 @@ When a guess conflicts with the docs, the docs win.
 - Checklist validation must also be treated as overall bug testing. Use the full checklist to look for possible regressions, broken state flows, accessibility gaps, and spec mismatches, not just to mark boxes.
 - If documents conflict, interpret them in this order: user request, design PDFs, checklist, then the detailed rule documents.
 
+## App.tsx Role
+
+- `src/App.tsx` is the root composition file for the application.
+- `App.tsx` should own top-level state wiring, major view switching, and assembly of already-separated components.
+- `App.tsx` must not accumulate domain-specific helper components, rendering utilities, inline icon definitions, or long configuration blocks.
+- If a unit in `App.tsx` has its own rendering logic, timing logic, interaction logic, or reusable constants, split it into a dedicated file or move its constants into `src/const/`.
+- Changes to `App.tsx` should generally make the file simpler, flatter, and more orchestration-focused rather than increasing its local complexity.
+
 ## Main Commands
 
 ```bash
